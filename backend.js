@@ -1,2 +1,2 @@
-export const API = "http://localhost:5000";
+export const API = "http://13.60.31.138:5000";
 console.log(API, "frm ");

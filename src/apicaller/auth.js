@@ -1,4 +1,4 @@
-const API = "https://13.60.24.221";
+const API = "https://project-backend-iy2a.onrender.com";
 export const getAllUser = async (user, token) => {
 	console.log(token);
 	try {

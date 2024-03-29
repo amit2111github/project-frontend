@@ -1,4 +1,4 @@
-const {API} = require("../../backend.js");
+const API = "https://13.60.24.221";
 export const getAllUser = async (user, token) => {
 	console.log(token);
 	try {

@@ -50,7 +50,7 @@ const ChatPage = ({ history }) => {
     if (!myref || myref !== undefined) myref.current.focus();
   }, []);
   useEffect(() => {
-    const temp_socket = io(SOCKET_URL || "https://13.60.24.221", {
+    const temp_socket = io(SOCKET_URL || "https://project-backend-iy2a.onrender.com", {
       query: {
         id: user._id,
       },

@@ -45,7 +45,7 @@ const Video = () => {
 
   // socket connection
   useEffect(() => {
-    const temp_socket = io(SOCKET_URL || "http://localhost:3000", {
+    const temp_socket = io(SOCKET_URL || "https://13.60.24.221", {
       query: {
         id: user._id,
       },

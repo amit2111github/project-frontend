@@ -1,2 +1,2 @@
-export const API = "https://13.60.24.221";
+export const API = "https://project-backend-iy2a.onrender.com";
 console.log(API, "frm ");

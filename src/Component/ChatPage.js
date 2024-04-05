@@ -50,7 +50,7 @@ const ChatPage = ({ history }) => {
     if (!myref || myref !== undefined) myref.current.focus();
   }, []);
   useEffect(() => {
-    const temp_socket = io(SOCKET_URL || "https://project-backend-iy2a.onrender.com", {
+    const temp_socket = io(SOCKET_URL, {
       query: {
         id: user._id,
       },
@@ -66,6 +66,10 @@ const ChatPage = ({ history }) => {
       if (secondUser._id == userId) setFriendLocation(city);
     });
     setSocket(temp_socket);
+    return () => {
+      temp_socket.off();
+      setSocket("");
+    };
   }, [secondUser]);
   if (position && socket) {
     const pos = {
@@ -122,7 +126,7 @@ const ChatPage = ({ history }) => {
         sender: user._id,
         receiver: secondUser._id,
       });
-      setMessages([...messages, data]);
+      setMessages((old) => [...messages, data]);
     }
 
     setDescription("");

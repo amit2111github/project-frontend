@@ -1,4 +1,4 @@
-const API = "https://project-backend-iy2a.onrender.com";
+const API = process.env.REACT_APP_API;
 export const getAllUser = async (user, token) => {
 	console.log(token);
 	try {

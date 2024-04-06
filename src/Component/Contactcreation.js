@@ -7,6 +7,7 @@ import "../style/cardStyle.css";
 import { successMessage, errorMessage, loadingMessage } from "./Message";
 
 const Contactcreation = () => {
+  const [name , setName] = useState("");
   const { user, token } = isSignedIn();
   const [allUser, setAllUser] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState([]);
@@ -28,7 +29,17 @@ const Contactcreation = () => {
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-
+  const nameFilter = (name1 , name2) => {
+    if(name2.length == 0) return false;
+    return name1.toLowerCase().startsWith(name2.toLowerCase());
+  }
+  const getCount = (users) => {
+    let count = 0;
+    users.forEach(cur => {
+      if(nameFilter(cur.name , name)) count++;
+    })
+    return count;
+  }
   const handleSubmit = async (event, email, id) => {
     event.preventDefault();
     setLoadingFriends((o) => [...o, id]);
@@ -67,52 +78,55 @@ const Contactcreation = () => {
             </div>
           </div>
           <div className="container">
-            <table class="table caption-top">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allUser.map((cur, index) => (
-                  <tr>
-                    <th scope="row" title={index + 1}>
-                      {index + 1}
-                    </th>
-                    <td className="heading-avatar-icon" title="image">
-                      <img
-                        src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                        alt="userimage"
-                      />
-                    </td>
-                    <td title={cur.name}>{cur.name}</td>
-                    <td title={cur.email}>{cur.email}</td>
-                    <td>
-                      <button
-                        class="btn btn-primary"
-                        type="button"
-                        disabled={loadingFriends.includes(cur._id)}
-                        onClick={(e) => handleSubmit(e, cur.email, cur._id)}
-                      >
-                        {loadingFriends.includes(cur._id) && (
-                          <span
-                            class="spinner-border spinner-border-sm"
-                            aria-hidden="true"
-                          ></span>
-                        )}
-                        <span role="status" className="m-2">
-                          Follow
-                        </span>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              <div className="form-group">
+                <input type="text" className="form-control" placeholder="Enter Friend's Name" value = {name} onChange = {e => setName(e.target.value)}/>
+              </div>
+            {getCount(allUser)>0 && <table className="table caption-top" style = {{marginTop : "20px"}}>
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Image</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {allUser.filter(cur => nameFilter(cur.name,name)).map((cur, index) => (
+                              <tr>
+                                <th scope="row" title={index + 1}>
+                                  {index + 1}
+                                </th>
+                                <td className="heading-avatar-icon" title="image">
+                                  <img
+                                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                    alt="userimage"
+                                  />
+                                </td>
+                                <td title={cur.name}>{cur.name}</td>
+                                <td title={cur.email}>{cur.email}</td>
+                                <td>
+                                  <button
+                                    class="btn btn-primary"
+                                    type="button"
+                                    disabled={loadingFriends.includes(cur._id)}
+                                    onClick={(e) => handleSubmit(e, cur.email, cur._id)}
+                                  >
+                                    {loadingFriends.includes(cur._id) && (
+                                      <span
+                                        class="spinner-border spinner-border-sm"
+                                        aria-hidden="true"
+                                      ></span>
+                                    )}
+                                    <span role="status" className="m-2">
+                                      Follow
+                                    </span>
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>}
           </div>
         </div>
       </div>

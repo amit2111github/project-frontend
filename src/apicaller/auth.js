@@ -1,7 +1,7 @@
 const API = process.env.REACT_APP_API;
-console.log(API, "is api");
+// console.log(API, "is api");
 export const getAllUser = async (user, token) => {
-	console.log(token);
+	// console.log(token);
 	try {
 		let data = await fetch(`${API}/user/${user._id}/getAll`, {
 			method: "get",
@@ -151,7 +151,7 @@ export const sendMessage = (
 };
 
 export const deleteContact = (userId, token, email) => {
-	console.log("inside");
+	// console.log("inside");
 	return fetch(`${API}/user/${userId}/remove-contact`, {
 		method: "PUT",
 		headers: {
@@ -165,7 +165,7 @@ export const deleteContact = (userId, token, email) => {
 		.catch((err) => console.log(err));
 };
 export const getAllPost = () => {
-	console.log(API);
+	// console.log(API);
 	return fetch(`${API}/post/getAll`, {
 		method: "GET",
 		headers: {
@@ -177,7 +177,7 @@ export const getAllPost = () => {
 		.catch((err) => console.log(err));
 };
 export const getPostOnSkip = (skipCount) => {
-	console.log(skipCount);
+	// console.log(skipCount);
 	return fetch(`${API}/post/getAll?skipcount=${skipCount}`, {
 		method: "GET",
 		headers: {
@@ -189,7 +189,7 @@ export const getPostOnSkip = (skipCount) => {
 		.catch((err) => console.log(err));
 };
 export const likeComment = (userId, commentId, token) => {
-	console.log("like it");
+	// console.log("like it");
 	return fetch(`${API}/comment/like/${userId}/${commentId}`, {
 		method: "PUT",
 		headers: {
@@ -203,7 +203,7 @@ export const likeComment = (userId, commentId, token) => {
 };
 
 export const sendPost = (userId, token, post) => {
-	console.log(post, token, userId);
+	// console.log(post, token, userId);
 
 	return fetch(`${API}/post/create/${userId}`, {
 		method: "POST",
@@ -282,7 +282,7 @@ export const changePassword = (email) => {
 };
 
 export const resetpassword = (password, token) => {
-	console.log(token);
+	// console.log(token);
 	return fetch(`${API}/user/update-password`, {
 		method: "POST",
 		headers: {
@@ -293,7 +293,7 @@ export const resetpassword = (password, token) => {
 	})
 		.then((res) => res.json())
 		.then((res) => {
-			console.log(res);
+			// console.log(res);
 			return res;
 		})
 		.catch((err) => console.log(err));

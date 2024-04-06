@@ -1,41 +1,55 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import '../style/cardStyle.css';
-import { isSignedIn, signOut } from '../apicaller/auth';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import "../style/cardStyle.css";
+import { isSignedIn, signOut } from "../apicaller/auth";
 
 const Menu = () => (
-	<div class="container" style={{ height: '50px' }}>
-		<div class="header_section_top">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="custom_menu">
+	<div className="container" style={{ height: "50px" }}>
+		<div className="header_section_top">
+			<div className="row">
+				<div className="col-sm-12">
+					<div className="custom_menu">
 						<ul>
 							<li>
-								<a style={{ textDecoration: 'none' }} href="/">
+								<a style={{ textDecoration: "none" }} href="/">
 									Home
 								</a>
 							</li>
 							<li>
-								<a style={{ textDecoration: 'none' }} href="/user/contactpage">
+								<a
+									style={{ textDecoration: "none" }}
+									href="/user/contactpage"
+								>
 									Friends
 								</a>
 							</li>
 
-							<li>
-								<a style={{ textDecoration: 'none' }} href="/user/dashboard">
-									DashBoard
-								</a>
-							</li>
+							{isSignedIn() && (
+								<li>
+									<a
+										style={{ textDecoration: "none" }}
+										href="/user/dashboard"
+									>
+										DashBoard
+									</a>
+								</li>
+							)}
 
 							{!isSignedIn() && (
 								<>
 									<li>
-										<a style={{ textDecoration: 'none' }} href="/signin">
+										<a
+											style={{ textDecoration: "none" }}
+											href="/signin"
+										>
 											Sign In
 										</a>
 									</li>
 									<li>
-										<a style={{ textDecoration: 'none' }} href="/signup">
+										<a
+											style={{ textDecoration: "none" }}
+											href="/signup"
+										>
 											Sign Up
 										</a>
 									</li>
@@ -44,7 +58,7 @@ const Menu = () => (
 							{isSignedIn() && (
 								<li>
 									<a
-										style={{ textDecoration: 'none' }}
+										style={{ textDecoration: "none" }}
 										href="/"
 										onClick={() => {
 											signOut();
@@ -58,7 +72,6 @@ const Menu = () => (
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 );

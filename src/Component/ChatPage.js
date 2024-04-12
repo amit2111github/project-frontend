@@ -65,6 +65,14 @@ const ChatPage = ({ history }) => {
     temp_socket.on("location", ({ userId, city }) => {
       if (secondUser._id == userId) setFriendLocation(city);
     });
+    temp_socket.on("receive", (payload) => {
+      setMessages((o) => {
+        return [...o, payload];
+      });
+      if (messageRef.current) {
+        messageRef.current.scrollTop = messageRef.current.scrollHeight;
+      }
+    });
     setSocket(temp_socket);
     return () => {
       temp_socket.off();
@@ -151,17 +159,7 @@ const ChatPage = ({ history }) => {
       ? time.seconds + " seconds"
       : "just now";
   };
-  useEffect(() => {
-    if (!socket || socket === undefined || socket === null) return;
-    socket.on("receive", (payload) => {
-      setMessages((o) => {
-        return [...o, payload];
-      });
-      if (messageRef.current) {
-        messageRef.current.scrollTop = messageRef.current.scrollHeight;
-      }
-    });
-  });
+ 
 
   const preloading = async (userId, token, to) => {
     let data = await getAllMessage(userId, token, to);

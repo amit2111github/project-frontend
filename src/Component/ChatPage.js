@@ -65,14 +65,7 @@ const ChatPage = ({ history }) => {
     temp_socket.on("location", ({ userId, city }) => {
       if (secondUser._id == userId) setFriendLocation(city);
     });
-    temp_socket.on("receive", (payload) => {
-      setMessages((o) => {
-        return [...o, payload];
-      });
-      if (messageRef.current) {
-        messageRef.current.scrollTop = messageRef.current.scrollHeight;
-      }
-    });
+
     setSocket(temp_socket);
     return () => {
       temp_socket.off();
@@ -101,7 +94,20 @@ const ChatPage = ({ history }) => {
   const handleChange = (event) => {
     setDescription(event.target.value);
   };
-
+  useEffect(() => {
+    if(socket) {
+      socket.on("receive", (payload) => {
+        console.log("receivd , ", payload);
+        setMessages((o) => {
+          return [...o, payload];
+        });
+        if (messageRef.current) {
+          messageRef.current.scrollTop = messageRef.current.scrollHeight;
+        }
+      });  
+    }
+    
+  });
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (description.length <= 0) return;

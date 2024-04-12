@@ -93,20 +93,24 @@ const ChatPage = ({ history }) => {
   };
   const handleChange = (event) => {
     setDescription(event.target.value);
-  };
+  };  
   useEffect(() => {
     if(socket) {
       socket.on("receive", (payload) => {
         console.log("receivd , ", payload);
         setMessages((o) => {
-          return [...o, payload];
+          let shouldAdd = true;
+          o.forEach(cur => {
+            if(cur._id == payload._id) shouldAdd = false;
+          });
+          if(shouldAdd) return [...o, payload];
+          return [...o]
         });
         if (messageRef.current) {
           messageRef.current.scrollTop = messageRef.current.scrollHeight;
         }
       });  
-    }
-    
+    } 
   });
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -136,6 +140,7 @@ const ChatPage = ({ history }) => {
       alert("Capsule Message Sent");
     } else {
       socket.emit("chat", {
+        id : data._id,
         description,
         sender: user._id,
         receiver: secondUser._id,

@@ -10,6 +10,8 @@ import {
 } from "../Component/Message";
 
 const Signup = ({ history }) => {
+  const [step, setStep] = useState(1);
+  const [otp, setOtp] = useState("");
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -37,26 +39,48 @@ const Signup = ({ history }) => {
     if (!password)
       return setValues({ ...values, error: "Password is required" });
     setValues({ ...values, loading: true, error: false, success: false });
-    const data = await signup(name, email, password);
-    setValues({ ...values, loading: false });
-    if (data.error || data.errors) {
-      setValues({
-        ...values,
-        error: data.error || data.errors[0].msg,
-        success: false,
-      });
-    } else {
-      setValues({
-        ...values,
-        success: true,
-        didRedirect: false,
-        email: "",
-        password: "",
-        error: false,
-      });
-      setTimeout(() => {
-        history.push("/signin");
-      }, 2000);
+    if (step == 1) {
+      const data = await signup(name, email, password, step,otp);
+      setValues({ ...values, loading: false });
+      if (data.error || data.errors) {
+        setValues({
+          ...values,
+          error: data.error || data.errors[0].msg,
+          success: false,
+        });
+      } else {
+        setStep(2);
+        setValues({
+          ...values,
+          error: false,
+          success: false,
+        });
+      }
+    } else if (step == 2) {
+      if (!otp) return setValues({ ...values, error: "Otp is required" });
+      const data = await signup(name, email, password, step, otp);
+      setValues({ ...values, loading: false });
+      if (data.error || data.errors) {
+        setValues({
+          ...values,
+          error: data.error || data.errors[0].msg,
+          success: false,
+        });
+      } else {
+        setStep(1);
+        setOtp("");
+        setValues({
+          ...values,
+          success: "Account created successfully",
+          didRedirect: false,
+          email: "",
+          password: "",
+          error: false,
+        });
+        setTimeout(() => {
+          history.push("/signin");
+        }, 1000);
+      }
     }
   };
   return (
@@ -64,7 +88,6 @@ const Signup = ({ history }) => {
       <div className="fashion_section" style={{ backgroundColor: "#f0de6e" }}>
         <Menu />
         <div className="logo_section mb-2">
-          {/* // logo section */}
           <div className="container">
             <div className="row">
               <div className="col-sm-12">
@@ -81,7 +104,7 @@ const Signup = ({ history }) => {
             </div>
             <p className="messages font-weight-normal">Welcome</p>
             {error && errorMessage(error)}
-            {success && successMessage("Account created successfully")}
+            {success && successMessage(success)}
             {loading && loadingMessage("Loading...")}
             <SignupForm
               ref={passwordRef}
@@ -89,9 +112,12 @@ const Signup = ({ history }) => {
               handleSubmit={handleSubmit}
               handleChange={handleChange}
               values={values}
+              step={step}
+              otp={otp}
+              setOtp={(e) => setOtp(e.target.value)}
+              setStep = {setStep}
             />
           </div>
-          {/* logo ends here */}
         </div>
       </div>
       <Footer />

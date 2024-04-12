@@ -29,14 +29,16 @@ export const signin = (email, password) => {
 		.then((response) => response.json())
 		.catch((err) => console.log(err));
 };
-export const signup = (name, email, password) => {
-	return fetch(`${API}/home/signup`, {
+export const signup = (name, email, password, step,otp) => {
+	let data = {name , email, password , step};
+	if(step == 2) data.otp = otp;
+	return fetch(`${API}/home/signup/${step}`, {
 		method: "POST",
 		headers: {
 			Accept: "application/json",
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({ name, email, password }),
+		body: JSON.stringify(data),
 	})
 		.then((response) => response.json())
 		.catch((err) => console.log(err));
